@@ -31,8 +31,6 @@ if ($result->num_rows > 0) {
         $tutorlist['tutor_description'] = $row['tutor_description'];
         $tutorlist['tutor_datereg'] = $row['tutor_datereg'];
         $tutorlist['subject_name'] = $row['GROUP_CONCAT(tbl_subjects.subject_name ORDER BY tbl_subjects.subject_id ASC)'];
-        //$tutorlist['subject_price'] = $row['subject_price'];
-        //$tutorlist['subject_rating'] = $row['subject_rating'];
         array_push($tutors["tutors"],$tutorlist);
     }
     $response = array('status' => 'success', 'pageno'=>"$pageno",'numofpage'=>"$number_of_page", 'data' => $tutors);
