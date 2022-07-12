@@ -1,25 +1,18 @@
+
 <?php
 if (!isset($_POST)) {
     $response = array('status' => 'failed', 'data' => null);
     sendJsonResponse($response);
     die();
 }
-
 include_once("dbconnect.php");
-$email = $_POST['email'];
-$password = sha1($_POST['password']);
-$sqllogin = "SELECT * FROM table_user WHERE user_email = '$email' AND user_password = '$password'";
-$result = $conn->query($sqllogin);
-$numrow = $result->num_rows;
+$email = $_POST['user_email'];
+$cartid = $_POST['cartid'];
 
-if ($numrow > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $user['id'] = $row['user_id'];
-        $user['name'] = $row['user_name'];
-        $user['email'] = $row['user_email'];
-        $user['phoneNo'] = $row['user_phoneNo'];
-        $user['homeAdd'] = $row['user_homeAdd'];
-    }
+$sqldelete = "DELETE FROM tbl_carts WHERE cart_id ='$cartid'";
+if ($conn->query($sqldelete) === TRUE) {
+    $response = array('status' => 'success', 'data' => null);
+    sendJsonResponse($response);
 
     $sqlgetqty = "SELECT * FROM tbl_carts WHERE user_email = '$email' AND cart_status IS NULL";
     $result = $conn->query($sqlgetqty);
@@ -31,8 +24,6 @@ if ($numrow > 0) {
     $mycart = array();
     $user['cart'] =$carttotal;
 
-    $response = array('status' => 'success', 'data' => $user);
-    sendJsonResponse($response);
 } else {
     $response = array('status' => 'failed', 'data' => null);
     sendJsonResponse($response);
